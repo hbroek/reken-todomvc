@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="description" content="Reken implementation of the TodoMVC reference implementation">
+		<title>Reken.dev • TodoMVC</title>
+		<link rel="stylesheet" href="todomvc-css/base.css">
+		<link rel="stylesheet" href="todomvc-css/index.css">
+
+	</head>
+	<body data-route="/#currentFilter">
+		<section class="todoapp">
+			<header class="header">
+				<h1>todos</h1>
+				<input class="new-todo"
+					data-value="newTask"
+					data-on-change="newTask = addTask(state.tasks, newTask);saveState(state);"
+					data-calc="if (editTask== -1) elem.focus()"
+					placeholder="What needs to be done?"
+					autofocus
+				>
+			</header>
+			<!-- This section should be hidden by default and shown when there are todos -->
+			<section class="main" data-if="viewTasks.length>0">
+				<input id="toggle-all" class="toggle-all" type="checkbox" data-action="let someUnfinished = state.tasks.some(task => !task.completed);state.tasks.forEach(task => task.completed=someUnfinished)">
+				<label for="toggle-all">Mark all as complete</label>
+				<ul class="todo-list" data-for="task:filters[currentFilter]()">
+					<!-- List items should get the class `editing` when editing and `completed` when marked as completed -->
+					<li data-class="editing:editTask==task.index;completed:task.item.completed">
+						<div class="view">
+							<input class="toggle" type="checkbox" data-value="task.item.completed" data-on-change="saveState(state)" aria-label="Select or deselect task">
+							<label data-on-dblclick="editTask = task.index" data-text="${task.item.title}"></label>
+							<button class="destroy" data-action="deleteTask(state.tasks, task.item);saveState(state)"></button>
+						</div>
+						<input type="text" class="edit"
+							data-value="task.item.title"
+						    data-calc="if (editTask === task.index) {const end = elem.value.length; elem.setSelectionRange(end, end); elem.focus()};"
+							data-on-change="updateTask(state.tasks, task.item);saveState(state);editTask=-1"
+							data-on-focusout="if (editTask>=0) {updateTask(state.tasks, task.item);saveState(state);editTask=-1}"
+						>
+					</li>
+				</ul>
+			</section>
+			<!-- This footer should be hidden by default and shown when there are todos -->
+			<footer class="footer" data-if="state.tasks.length>0">
+				<!-- This should be `0 items left` by default -->
+				<span class="todo-count" data-html="<strong>${activeCount}</strong> item${activeCount==1?'':'s'} left"></span>
+				<!-- Remove this if you don't implement routing -->
+				<ul class="filters">
+					<li>
+						<a data-class="selected:currentFilter==''" href="#/">All</a>
+					</li>
+					<li>
+						<a data-class="selected:currentFilter=='active'" href="#/active">Active</a>
+					</li>
+					<li>
+						<a data-class="selected:currentFilter=='completed'" href="#/completed">Completed</a>
+					</li>
+				</ul>
+				<!-- Hidden if no completed items are left ↓ -->
+				<button class="clear-completed" data-if="state.tasks.some(task => task.completed)" data-action="state.tasks = deleteCompletedTasks(state.tasks); saveState(state);">Clear completed</button>
+			</footer>
+		</section>
+		<footer class="info">
+			<p>Double-click to edit a todo</p>
+			<p>A <a href="https://github.com/hbroek/reken-todomvc"> Reken implementation</a> of <a href="https://todomvc.com/">TodoMVC</a></p>
+			<p>Created by <a href="https://blog.henryvandenbroek.com">Henry van den Broek</a></p>
+			<p>Build with <a href="https://reken.dev">Reken.dev</a></p>
+		</footer>	
+		<script src="js/app.js"></script>
+		<script data-calc>
+			activeCount = state.tasks.reduce((count, task) => (task.completed?count:count+1),0)
+		</script>
+		<script src="https://cdn.jsdelivr.net/gh/hbroek/reken/dist/reken.min.js"></script>
+	</body>
+
+</html>
