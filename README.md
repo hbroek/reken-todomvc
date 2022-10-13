@@ -1,8 +1,8 @@
 # reken-todomvc
-Reken based implementation of the TodoMVC reference application. 
+Reken based implementation of the TodoMVC reference application. See [reken-todomvc](https://www.henryvandenbroek.com/apps/reken-todomvc/index.html) live demo
 
 ## About TodoMVC
-For more information about TodoMVC goals and functionality see the [todomvc.com] website(https://todomvc.com/).
+For more information about TodoMVC goals and functionality see the [todomvc.com](https://todomvc.com/) website.
 
 ## Reken based implementation
 In this section we list out the various Reken functionality (attributes) we use to implement the TodoMVC application
